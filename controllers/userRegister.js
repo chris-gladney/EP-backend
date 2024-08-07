@@ -1,3 +1,6 @@
+const nonGoogleUserdb = require("../model/nonGoogleUserSchema");
+const bcrypt = require("bcrypt");
+
 const userRegister = async (req, res) => {
   try {
     let user = await nonGoogleUserdb.findOne({ user: req.body.user });
