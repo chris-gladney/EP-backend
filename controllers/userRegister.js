@@ -12,6 +12,9 @@ const userRegister = async (req, res) => {
         user: req.body.user,
         pwd: hashedPwd,
         userEvents: [],
+        accessToken: "",
+        refreshToken: "",
+        role: 2001,
       });
 
       await newUser.save();

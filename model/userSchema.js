@@ -17,6 +17,8 @@ const userSchema = new mongoose.Schema(
     email: String,
     image: String,
     userEvents: [],
+    accessToken: String,
+    role: Number,
   },
   { timestamps: true }
 );

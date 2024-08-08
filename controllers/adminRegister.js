@@ -5,6 +5,7 @@ const adminRegister = async (req, res) => {
       newAdmin = new admindb({
         user: req.body.user,
         pwd: req.body.pwd,
+        role: 5150,
       });
 
       await newAdmin.save();

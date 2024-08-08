@@ -4,6 +4,7 @@ const app = express();
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 
 const PORT = 5000;
 const FEPORT = 5173;
@@ -19,11 +20,15 @@ const LocalStrategy = require("passport-local").Strategy;
 const userdb = require("./model/userSchema");
 const nonGoogleUserdb = require("./model/nonGoogleUserSchema");
 const admindb = require("./model/adminSchema");
+const eventsdb = require("./model/eventsSchema");
 
 const verifyJWT = require("./middleware/verifyJWT");
 const adminRegister = require("./controllers/adminRegister");
 const userRegister = require("./controllers/userRegister");
 const userLogin = require("./controllers/userLogin");
+const handleRefreshToken = require("./controllers/refreshToken");
+const getEvents = require("./controllers/getEvents");
+const handleLogout = require("./controllers/logout");
 
 app.use(
   cors({
@@ -33,6 +38,8 @@ app.use(
   })
 );
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use(
   session({
@@ -44,6 +51,10 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get("/hello", () => {
+  console.log("hello world")
+})
 
 app.post("/admin/register", async (req, res) => {
   adminRegister(req, res);
@@ -75,6 +86,7 @@ passport.use(
             email: profile.emails[0].value,
             image: profile.photos[0].value,
             userEvents: [],
+            accessToken: "",
           });
 
           await user.save();
@@ -164,8 +176,23 @@ app.get("/login/success", async (req, res) => {
 // ---------------------------------------------------------------
 // Passport local strategy
 
-app.post("/login", (req, res) => {
+app.post("/auth", (req, res) => {
   userLogin(req, res);
+});
+
+app.get("/refresh", (req, res) => {
+  handleRefreshToken(req, res);
+});
+
+app.get("/logout", (req, res) => {
+  handleLogout(req, res)
+});
+
+// Using jwt verify all routes that need to be validated need to be below this
+app.use(verifyJWT);
+
+app.get("/events", (req, res) => {
+  getEvents(req, res);
 });
 
 app.listen(PORT, () => {

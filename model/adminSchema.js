@@ -4,6 +4,7 @@ const adminSchema = new mongoose.Schema(
   {
     user: String,
     pwd: String,
+    role: Number
   },
   { timestamps: true }
 );

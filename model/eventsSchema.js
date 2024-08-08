@@ -1,24 +1,20 @@
 const mongoose = require("mongoose");
 
-const userEventSchema = new mongoose.Schema({
-  name: String,
-  date: Date,
-  priceInPennies: Number,
-  locationStreet: String,
-  locationStreetNumber: Number,
-  locationCity: String,
-  locationPostcode: String,
-  //   {
-  //     street: String,
-  //     streetNumber: Number,
-  //     city: String,
-  //     postcode: String,
-  //   },
-});
-
-const userEventsdb = new mongoose.model(
-  "eventplatform.events",
-  userEventSchema
+const eventSchema = new mongoose.Schema(
+  {
+    name: String,
+    date: Date,
+    priceInPennies: Number,
+    locationStreet: String,
+    locationStreetNumber: Number,
+    locationCity: String,
+    locationPostcode: String,
+  },
+  {
+    timestamps: true,
+  }
 );
 
-module.exports = userEventsdb;
+const eventsdb = new mongoose.model("eventplatform.events", eventSchema);
+
+module.exports = eventsdb;

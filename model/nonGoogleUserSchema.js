@@ -5,6 +5,9 @@ const nonGoogleUserSchema = new mongoose.Schema(
     user: String,
     pwd: String,
     userEvents: [],
+    accessToken: String,
+    refreshToken: String,
+    role: Number,
   },
   { timestamps: true }
 );
