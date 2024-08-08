@@ -15,7 +15,6 @@ const session = require("express-session");
 const passport = require("passport");
 
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
-const LocalStrategy = require("passport-local").Strategy;
 
 const userdb = require("./model/userSchema");
 const nonGoogleUserdb = require("./model/nonGoogleUserSchema");
@@ -52,9 +51,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get("/hello", () => {
-  console.log("hello world")
-})
+app.get("/hello", (req, res) => {
+  res.json({ message: "Hello" });
+});
 
 app.post("/admin/register", async (req, res) => {
   adminRegister(req, res);
@@ -185,7 +184,7 @@ app.get("/refresh", (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-  handleLogout(req, res)
+  handleLogout(req, res);
 });
 
 // Using jwt verify all routes that need to be validated need to be below this
